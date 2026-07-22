@@ -1,0 +1,30 @@
+import torch
+from diffusers import StableDiffusionPipeline
+import matplotlib.pyplot as plt
+
+# Model ID
+model_id = "runwayml/stable-diffusion-v1-5"
+
+# Load the model
+pipe = StableDiffusionPipeline.from_pretrained(
+    model_id,
+    torch_dtype=torch.float32
+)
+
+# If you have a GPU
+if torch.cuda.is_available():
+    pipe = pipe.to("cuda")
+
+# Prompt
+prompt = "A dragon boy is reading a book"
+
+# Generate image
+image = pipe(prompt).images[0]
+
+# Display image
+plt.imshow(image)
+plt.axis("off")
+plt.show()
+
+# Save image
+image.save("dragon_boy.png")
